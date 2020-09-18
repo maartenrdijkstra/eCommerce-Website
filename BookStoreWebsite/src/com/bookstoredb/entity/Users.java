@@ -5,10 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 // Generated 17 Sep 2020, 14:52:43 by Hibernate Tools 5.4.18.Final
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "Users.findAll", query =  "SELECT u FROM Users u ORDER BY u.fullName"),
+	@NamedQuery(name = "Users.countAll", query = "SELECT Count(*) FROM Users u")
+})
 public class Users implements java.io.Serializable {
 
 	private Integer userId;
