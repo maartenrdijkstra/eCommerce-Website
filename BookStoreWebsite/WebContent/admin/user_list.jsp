@@ -43,11 +43,20 @@
 					<td>${user.email}</td>
 					<td>${user.fullName}</td>
 					<td><a href="edit_user?id=${user.userId}">Edit</a>&nbsp; <a
-						href="delete">Delete</a></td>
+						href="javascript:confirmDelete(${user.userId})">Delete</a></td>
+
 				</tr>
 			</c:forEach>
 		</table>
 	</div>
 	<jsp:directive.include file="footer.jsp" />
+
+	<script>
+		function confirmDelete(userId){
+			if(confirm("Are you sure you want to delete the user with id " + userId + "?")) {
+				window.location = 'delete_user?id=' + userId;
+			}
+		}
+	</script>
 
 </body>
