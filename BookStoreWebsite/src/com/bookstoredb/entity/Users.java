@@ -13,10 +13,10 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
 	@NamedQuery(name = "Users.findAll", query =  "SELECT u FROM Users u ORDER BY u.fullName"),
+	@NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email"),
 	@NamedQuery(name = "Users.countAll", query = "SELECT Count(*) FROM Users u")
 })
 public class Users implements java.io.Serializable {
-
 	private Integer userId;
 	private String email;
 	private String password;
@@ -25,11 +25,12 @@ public class Users implements java.io.Serializable {
 	public Users() {
 	}
 
-	public Users(String email, String password, String fullName) {
+	public Users(String email, String fullName, String password) {
 		this.email = email;
-		this.password = password;
 		this.fullName = fullName;
+		this.password = password;
 	}
+
 
 	@Column(name = "user_id")
 	@Id
