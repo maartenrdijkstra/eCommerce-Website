@@ -25,7 +25,7 @@
 			</h4>
 		</div>
 	</c:if>
-	
+
 	<div align="center">
 		<table border="1" cellpadding="5">
 			<tr>
@@ -42,8 +42,8 @@
 					<td>${user.userId}</td>
 					<td>${user.email}</td>
 					<td>${user.fullName}</td>
-					<td><a href="edit">Edit</a>&nbsp; <a href="delete">Delete</a>
-					</td>
+					<td><a href="edit_user?id=${user.userId}">Edit</a>&nbsp; <a
+						href="delete">Delete</a></td>
 				</tr>
 			</c:forEach>
 		</table>
