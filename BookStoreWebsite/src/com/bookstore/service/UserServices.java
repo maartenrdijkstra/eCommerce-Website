@@ -15,18 +15,16 @@ import com.bookstore.dao.UserDAO;
 import com.bookstoredb.entity.Users;
 
 public class UserServices {
-	private EntityManagerFactory entityManagerFactory;
 	private EntityManager entityManager;
 	private UserDAO userDAO;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 
-	public UserServices(HttpServletRequest request, HttpServletResponse response) {
+	public UserServices(EntityManager entityManager, HttpServletRequest request, HttpServletResponse response) {
+		this.entityManager = entityManager;
 		this.request = request;
 		this.response = response;
 
-		entityManagerFactory = Persistence.createEntityManagerFactory("BookStoreWebsite");
-		entityManager = entityManagerFactory.createEntityManager();
 		userDAO = new UserDAO(entityManager);
 	}
 
@@ -67,7 +65,7 @@ public class UserServices {
 		Users user = userDAO.get(userId);
 
 		String destPage = "user_form.jsp";
-		
+
 		if (user == null) {
 			destPage = "message.jsp";
 			String message = "Could not find user with id " + userId + ".";
@@ -107,19 +105,19 @@ public class UserServices {
 			listUser(message);
 		}
 	}
-	
+
 	public void deleteUser() throws ServletException, IOException {
 		int userId = Integer.parseInt(request.getParameter("id"));
-		
+
 		String message;
-		
-		if(userDAO.get(userId) != null) {
-			userDAO.delete(userId);	
+
+		if (userDAO.get(userId) != null) {
+			userDAO.delete(userId);
 			message = "User has been deleted successfully";
 		} else {
 			message = "User already does not exist";
 		}
-		
+
 		listUser(message);
 	}
 }
