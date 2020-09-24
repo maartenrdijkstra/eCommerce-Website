@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.bookstore.dao.HashGenerator;
 import com.bookstore.dao.UserDAO;
 import com.bookstoredb.entity.Users;
 
@@ -54,7 +55,11 @@ public class UserServices {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
 			dispatcher.forward(request, response);
 		} else {
-			Users newUser = new Users(email, fullName, password);
+			String encryptedPassword = null;
+			if (password != null & !password.isEmpty()) {
+				encryptedPassword = HashGenerator.generateMD5(password);				
+			}
+			Users newUser = new Users(email, fullName, encryptedPassword);
 			userDAO.create(newUser);
 			listUser("New user created successfully");
 		}
@@ -98,9 +103,16 @@ public class UserServices {
 			requestDispatcher.forward(request, response);
 		} else {
 
-			Users user = new Users(userId, email, fullName, password);
-			userDAO.update(user);
-
+			userById.setEmail(email);
+			userById.setPassword(password);
+			
+			if(password != null & !password.isEmpty()) {
+				String encryptedPasswordString = HashGenerator.generateMD5(password);
+				userById.setPassword(encryptedPasswordString);
+			}
+			
+			userDAO.update(userById);
+			
 			String message = "User has been updated successfully";
 			listUser(message);
 		}
@@ -120,4 +132,41 @@ public class UserServices {
 
 		listUser(message);
 	}
+	
+	public void login() throws ServletException, IOException {
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		
+		System.out.println("--- login() method invoked ---");
+		System.out.println(request.getParameter("email"));
+		System.out.println(request.getParameter("password"));
+		
+		boolean loginResult = userDAO.checkLogin(email, password);
+		
+		if(loginResult) {
+			System.out.println("Login succeeded!");
+			request.getSession().setAttribute("useremail", email);
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/");
+			dispatcher.forward(request, response);
+			
+		} else {
+			String message = "Login failed!";
+			request.setAttribute("message", message);
+			System.out.println("Wrong creds?");
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+			dispatcher.forward(request, response);
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

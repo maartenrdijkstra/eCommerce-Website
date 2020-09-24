@@ -11,10 +11,10 @@ import javax.persistence.NamedQuery;
 // Generated 17 Sep 2020, 14:52:43 by Hibernate Tools 5.4.18.Final
 
 @Entity
-@NamedQueries({
-	@NamedQuery(name = "Users.findAll", query =  "SELECT u FROM Users u ORDER BY u.fullName"),
-	@NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email"),
-	@NamedQuery(name = "Users.countAll", query = "SELECT COUNT(*) FROM Users u")
+@NamedQueries({ @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u ORDER BY u.fullName"),
+		@NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email"),
+		@NamedQuery(name = "Users.countAll", query = "SELECT COUNT(*) FROM Users u"),
+		@NamedQuery(name = "Users.checkLogin", query = "SELECT u FROM Users u WHERE u.email = :email AND password = :password") 
 })
 public class Users implements java.io.Serializable {
 	private Integer userId;
@@ -35,7 +35,6 @@ public class Users implements java.io.Serializable {
 		this(email, fullName, password);
 		this.userId = userId;
 	}
-
 
 	@Column(name = "user_id")
 	@Id

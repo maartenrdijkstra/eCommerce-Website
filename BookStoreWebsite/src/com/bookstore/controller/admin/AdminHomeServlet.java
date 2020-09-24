@@ -15,7 +15,6 @@ public class AdminHomeServlet extends HttpServlet {
 
 	public AdminHomeServlet() {
 		super();
-		//
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -25,4 +24,12 @@ public class AdminHomeServlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher(homepage);
 		dispatcher.forward(request, response);
 	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		doGet(req, resp);
+	}
+	
+	
 }

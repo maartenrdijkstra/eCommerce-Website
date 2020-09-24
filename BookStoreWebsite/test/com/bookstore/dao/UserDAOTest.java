@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 
@@ -106,6 +107,26 @@ public class UserDAOTest extends BaseDAOTest {
 	public void testCount() {
 		long totalUsers = userDAO.count();
 		assertEquals(totalUsers, 5);
+	}
+	
+	@Test
+	public void testCheckLoginSuccess(){ 
+		String email = "nam@codejava.net";
+		String password = "mysecret";
+		
+		boolean loginResult = userDAO.checkLogin(email, password);
+		
+		assertTrue(loginResult);
+	}
+	
+	@Test
+	public void testCheckLoginFail(){ 
+		String email = "nam@codejava.net";
+		String password = "mysecretie";
+		
+		boolean loginResult = userDAO.checkLogin(email, password);
+		
+		assertFalse(loginResult);
 	}
 	
 	@Test
