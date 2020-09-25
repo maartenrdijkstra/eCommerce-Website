@@ -12,7 +12,7 @@
 		<img src="${pageContext.request.contextPath}/images/BookstoreLogo.png" />
 	</div>
 	<div>
-		<h2>Sorry, the server has encountered an error while fulfilling your requests.</h2>
+		<h2>Sorry, the server has encountered an error while fulfilling your request.</h2>
 		<h3>Please check back later or contact our administrators</h3>
 	</div>
 	<div>
