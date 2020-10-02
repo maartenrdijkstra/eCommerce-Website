@@ -34,7 +34,10 @@ import javax.persistence.UniqueConstraint;
 @NamedQueries({
 	@NamedQuery(name = "Book.findAll", query = "SELECT b FROM Book b"),
 	@NamedQuery(name = "Book.findByTitle", query = "SELECT b FROM Book b WHERE b.title = :title"),
-	@NamedQuery(name = "Book.countAll", query = "SELECT COUNT(*) FROM Book b")
+	@NamedQuery(name = "Book.countAll", query = "SELECT COUNT(*) FROM Book b"),
+	@NamedQuery(name = "Book.findByCategory", query = "SELECT b FROM Book b "
+			+ "JOIN Category c ON b.category.categoryId = c.categoryId AND c.categoryId = :catId"),
+	@NamedQuery(name = "Book.listNew", query = "SELECT b FROM Book b ORDER BY b.publishDate DESC")
 })
 
 public class Book implements java.io.Serializable {
@@ -218,4 +221,31 @@ public class Book implements java.io.Serializable {
 	public void setBase64Image(String base64Image) {
 		this.base64Image = base64Image;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((bookId == null) ? 0 : bookId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Book other = (Book) obj;
+		if (bookId == null) {
+			if (other.bookId != null)
+				return false;
+		} else if (!bookId.equals(other.bookId))
+			return false;
+		return true;
+	}
+	
+	
 }

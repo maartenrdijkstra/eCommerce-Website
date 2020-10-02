@@ -1,4 +1,4 @@
-<div align="center">
+<div align="center" style="clear:both">
 	<br />
 	<br />
 	<h4>Coypright &copy; 2020 by Evergreen Books Co., Ltd</h4>
