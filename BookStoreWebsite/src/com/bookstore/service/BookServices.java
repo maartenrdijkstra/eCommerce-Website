@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,18 +21,16 @@ import com.bookstoredb.entity.Category;
 
 public class BookServices {
 
-	protected EntityManager entityManager;
 	private BookDAO bookDAO;
 	private CategoryDAO categoryDAO;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 
-	public BookServices(EntityManager entityManager, HttpServletRequest request, HttpServletResponse response) {
-		this.entityManager = entityManager;
+	public BookServices(HttpServletRequest request, HttpServletResponse response) {
 		this.request = request;
 		this.response = response;
-		bookDAO = new BookDAO(entityManager);
-		categoryDAO = new CategoryDAO(entityManager);
+		bookDAO = new BookDAO();
+		categoryDAO = new CategoryDAO();
 	}
 
 	public void listBooks() throws ServletException, IOException {
@@ -201,11 +198,9 @@ public class BookServices {
 			request.getRequestDispatcher("frontend/message.jsp").forward(request, response);
 			return;
 		}
-		List<Category> listCategory = categoryDAO.listAll();
 		
 		request.setAttribute("listBooks", listBooks);
 		request.setAttribute("category", category);	
-		request.setAttribute("listCategory", listCategory);
 		
 		String listPage = "frontend/books_list_by_category.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(listPage);
@@ -214,9 +209,7 @@ public class BookServices {
 
 	public void viewBookDetails() throws ServletException, IOException {
 		int bookId = Integer.parseInt(request.getParameter("id"));
-		List<Category> listCategory = categoryDAO.listAll();
-		
-		request.setAttribute("listCategory", listCategory);
+
 		Book book = bookDAO.get(bookId);
 		
 		String destPage = "frontend/book_detail.jsp";

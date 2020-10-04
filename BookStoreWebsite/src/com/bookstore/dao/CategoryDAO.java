@@ -9,10 +9,6 @@ import com.bookstoredb.entity.Users;
 
 public class CategoryDAO extends JpaDAO<Category> implements GenericDAO<Category> {
 
-	public CategoryDAO(EntityManager entityManager) {
-		super(entityManager);
-	}
-
 	@Override
 	public Category create(Category category) {
 		// TODO Auto-generated method stub

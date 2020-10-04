@@ -24,19 +24,18 @@ import org.junit.Test;
 import com.bookstoredb.entity.Book;
 import com.bookstoredb.entity.Category;
 
-public class BookDAOTest extends BaseDAOTest {
+public class BookDAOTest {
 
 	private static BookDAO bookDao;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		BaseDAOTest.setUpBeforeClass();
-		bookDao = new BookDAO(entityManager);
+		bookDao = new BookDAO();
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		BaseDAOTest.tearDownAfterClass();
+		bookDao.close();
 	}
 
 	@Test
