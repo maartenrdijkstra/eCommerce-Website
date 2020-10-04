@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.bookstore.dao.CategoryDAO;
 import com.bookstoredb.entity.Category;
+import static com.bookstore.service.CommonUtility.*;
 
 public class CategoryServices {
 	private CategoryDAO categoryDAO;
@@ -30,10 +31,8 @@ public class CategoryServices {
 		if (message != null) {
 			request.setAttribute("message", message);
 		}
-		String listPage = "category_list.jsp";
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(listPage);
 
-		requestDispatcher.forward(request, response);
+		forwardToPage("category_list.jsp", request, response);
 	}
 
 	public void listCategory() throws ServletException, IOException {
@@ -48,8 +47,7 @@ public class CategoryServices {
 			String message = "Could not create category. " + "A category with name " + name + " already exists.";
 			request.setAttribute("message", message);
 
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("message.jsp");
-			requestDispatcher.forward(request, response);
+			showMessageBackend(message, request, response);
 		} else {
 			Category newCategory = new Category(name);
 			categoryDAO.create(newCategory);
@@ -65,14 +63,11 @@ public class CategoryServices {
 		String destPage = "category_form.jsp";
 		if (category != null) {
 			request.setAttribute("category", category);
+			forwardToPage("category_form.jsp", request, response);
 		} else {
 			String message = "Could not find category with ID " + categoryId;
-			request.setAttribute("message", message);
-			destPage = "message.jsp";
+			showMessageBackend(message, request, response);
 		}
-
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(destPage);
-		requestDispatcher.forward(request, response);
 	}
 
 	public void updateCategory() throws ServletException, IOException {
@@ -85,10 +80,7 @@ public class CategoryServices {
 		if (categoryByName != null && categoryById.getCategoryId() != categoryByName.getCategoryId()) {
 			String message = "Could not update category." + " A category with name " + categoryName
 					+ " already exists.";
-			request.setAttribute("message", message);
-
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("message.jsp");
-			requestDispatcher.forward(request, response);
+			showMessageBackend(message, request, response);
 		} else {
 			categoryById.setName(categoryName);
 			categoryDAO.update(categoryById);
@@ -103,13 +95,12 @@ public class CategoryServices {
 		Category category = categoryDAO.get(categoryId);
 		if (category == null) {
 			message = "Could not find category with ID " + categoryId + ", or it might have been deleted already";
-			request.setAttribute("message", message);
-			request.getRequestDispatcher("message.jsp").forward(request, response);
+			showMessageBackend(message, request, response);
 			return;
-		} else {
-			categoryDAO.delete(categoryId);
-			message = "The category with ID " + categoryId + " has been removed successfully.";
-			listCategory(message);
 		}
+
+		categoryDAO.delete(categoryId);
+		message = "The category with ID " + categoryId + " has been removed successfully.";
+		listCategory(message);
 	}
 }

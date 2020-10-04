@@ -18,6 +18,7 @@ import com.bookstore.dao.BookDAO;
 import com.bookstore.dao.CategoryDAO;
 import com.bookstoredb.entity.Book;
 import com.bookstoredb.entity.Category;
+import static com.bookstore.service.CommonUtility.*;
 
 public class BookServices {
 
@@ -45,18 +46,14 @@ public class BookServices {
 			request.setAttribute("message", message);
 		}
 
-		String listPage = "book_list.jsp";
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(listPage);
-		requestDispatcher.forward(request, response);
+		forwardToPage("book_list.jsp", message, request, response);
 	}
 
 	public void showBookNewForm() throws ServletException, IOException {
 		List<Category> listCategory = categoryDAO.listAll();
 		request.setAttribute("listCategory", listCategory);
 
-		String newPage = "book_form.jsp";
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(newPage);
-		requestDispatcher.forward(request, response);
+		forwardToPage("book_form.jsp", request, response);
 	}
 
 	public void createBook() throws ServletException, IOException {
@@ -97,12 +94,6 @@ public class BookServices {
 			throw new ServletException("Error parsing publish date (format is MM/dd/yyyy");
 		}
 
-		System.out.println("Author: " + author);
-		System.out.println("Description: " + description);
-		System.out.println("isbn: " + isbn);
-		System.out.println("Price: " + price);
-		System.out.println("Publish Date: " + publishDate);
-
 		String title = request.getParameter("title");
 		book.setTitle(title);
 
@@ -141,14 +132,11 @@ public class BookServices {
 
 			request.setAttribute("book", book);
 			request.setAttribute("listCategory", listCategory);
+			forwardToPage("book_form.jsp", request, response);
 		} else {
-			destPage = "message.jsp";
 			String message = "Could not find book with ID " + bookId;
-			request.setAttribute("message", message);
+			showMessageBackend(message, request, response);
 		}
-
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(destPage);
-		requestDispatcher.forward(request, response);
 	}
 
 	public void updateBook() throws ServletException, IOException {
@@ -178,8 +166,7 @@ public class BookServices {
 
 		if (book == null) {
 			String message = "Could not find book with ID " + bookId + ", or it might have been deleted already";
-			request.setAttribute("message", message);
-			request.getRequestDispatcher("message.jsp").forward(request, response);
+			showMessageBackend(message, request, response);
 		} else {
 			String message = "The book has been deleted successfully";
 			bookDAO.delete(bookId);
@@ -194,17 +181,14 @@ public class BookServices {
 		
 		if(category == null) {
 			String message = "Sorry, the category ID " + categoryId + " is not available.";
-			request.setAttribute("message", message);
-			request.getRequestDispatcher("frontend/message.jsp").forward(request, response);
+			showMessageFrontend(message, request, response);
 			return;
 		}
 		
 		request.setAttribute("listBooks", listBooks);
 		request.setAttribute("category", category);	
 		
-		String listPage = "frontend/books_list_by_category.jsp";
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(listPage);
-		requestDispatcher.forward(request, response);
+		forwardToPage("frontend/books_list_by_category.jsp", request, response);
 	}
 
 	public void viewBookDetails() throws ServletException, IOException {
@@ -212,17 +196,13 @@ public class BookServices {
 
 		Book book = bookDAO.get(bookId);
 		
-		String destPage = "frontend/book_detail.jsp";
 		if(book != null) {
 			request.setAttribute("book", book);
+			forwardToPage("frontend/book_detail.jsp", request, response);
 		} else {
-			destPage = "frontend/message.jsp";
 			String message = "Sorry, the book with ID " + bookId + " is not available.";
-			request.setAttribute("message", message);
+			showMessageFrontend(message, request, response);
 		}
-
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(destPage);
-		requestDispatcher.forward(request, response);
 	}
 
 	public void search() throws ServletException, IOException {
@@ -237,9 +217,6 @@ public class BookServices {
 		
 		request.setAttribute("keyword", keyword);
 		request.setAttribute("result", result);
-		
-		String resultPage = "frontend/search_result.jsp";
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(resultPage);
-		requestDispatcher.forward(request, response);
+		forwardToPage("frontend/search_result.jsp", request, response);
 	}
 }

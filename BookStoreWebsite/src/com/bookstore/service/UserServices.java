@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.bookstore.dao.HashGenerator;
 import com.bookstore.dao.UserDAO;
 import com.bookstoredb.entity.Users;
+import static com.bookstore.service.CommonUtility.*;
 
 public class UserServices {
 	private UserDAO userDAO;
@@ -31,10 +32,8 @@ public class UserServices {
 		if (message != null) {
 			request.setAttribute("message", message);
 		}
-		String listPage = "user_list.jsp";
 
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(listPage);
-		requestDispatcher.forward(request, response);
+		forwardToPage("user_list.jsp", request, response);
 	}
 
 	public void createUser() throws ServletException, IOException {
@@ -46,9 +45,7 @@ public class UserServices {
 
 		if (existUser != null) {
 			String message = "Could not create user. A user with email " + email + " already exists.";
-			request.setAttribute("message", message);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("message.jsp");
-			dispatcher.forward(request, response);
+			showMessageBackend(message, request, response);
 		} else {
 			String encryptedPassword = null;
 			if (password != null & !password.isEmpty()) {
@@ -63,19 +60,14 @@ public class UserServices {
 	public void editUser() throws ServletException, IOException {
 		int userId = Integer.parseInt(request.getParameter("id"));
 		Users user = userDAO.get(userId);
-
-		String destPage = "user_form.jsp";
-
+		
 		if (user == null) {
-			destPage = "message.jsp";
 			String message = "Could not find user with id " + userId + ".";
-			request.setAttribute("message", message);
+			showMessageBackend(message, request, response);
 		} else {
 			request.setAttribute("user", user);
+			forwardToPage("user_form.jsp", request, response);
 		}
-
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher(destPage);
-		requestDispatcher.forward(request, response);
 	}
 
 	public void updateUser() throws ServletException, IOException {
@@ -92,12 +84,8 @@ public class UserServices {
 
 		if (userByEmail != null && userByEmail.getUserId() != userById.getUserId()) {
 			String message = "Could not update user. User with email " + email + " already exists.";
-			request.setAttribute("message", message);
-
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("message.jsp");
-			requestDispatcher.forward(request, response);
+			showMessageBackend(message, request, response);
 		} else {
-
 			userById.setEmail(email);
 			userById.setPassword(password);
 			
@@ -142,26 +130,14 @@ public class UserServices {
 			System.out.println("Login succeeded!");
 			request.getSession().setAttribute("useremail", email);
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/");
-			dispatcher.forward(request, response);
+			forwardToPage("/admin/", request, response);
 			
 		} else {
 			String message = "Login failed!";
 			request.setAttribute("message", message);
 			System.out.println("Wrong creds?");
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-			dispatcher.forward(request, response);
+			forwardToPage("login.jsp", request, response);
 		}
-		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

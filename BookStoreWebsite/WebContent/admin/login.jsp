@@ -11,7 +11,7 @@
 	<script type="text/javascript" src="../js/jquery.validate.min.js"></script>
 </head>
 <body>
-	<div align="center">
+	<div class="center">
 		<h1>Book Store Administration</h1>
 		<h2>Admin Login</h2>
 		

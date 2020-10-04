@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<div align="center">
+<div class="center">
 	<div>
 		<img src="images/BookstoreLogo.png" />
 	</div>

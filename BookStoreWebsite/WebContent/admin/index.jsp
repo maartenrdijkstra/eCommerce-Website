@@ -11,7 +11,7 @@
 <body>
 	<jsp:directive.include file="header.jsp" />
 
-	<div align="center">
+	<div class="center">
 		<h2 class="pageheading">Administrative Dashboard</h2>
 	</div>
 	<div align="center">
@@ -25,17 +25,17 @@
 		</b>
 	</div>
 	
-	<div align="center">
+	<div class="center">
 		<hr width="60%"/>
 		<h2 class="pageheading">Recent Sales:</h2>
 	</div>
 	
-	<div align="center">
+	<div class="center">
 		<hr width="60%"/>
 		<h2 class="pageheading">Recent Reviews:</h2>
 	</div>
 	
-	<div align="center">
+	<div class="center">
 		<hr width="60%"/>
 		<h2 class="pageheading">Statistics:</h2>
 		<hr width="60%"/>

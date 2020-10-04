@@ -11,18 +11,16 @@
 <body>
 	<jsp:directive.include file="header.jsp" />
 	
-	<div align="center">
+	<div class="center">
 		<h2>${category.name}</h2>
 	</div>
 	
-	<div align="left" style="width:80%; margin: 0 14%">
+	<div class="left myStyle">
 		<c:forEach items="${listBooks}" var="book">
-			<div style="display: inline-block; text-align: center; min-width: 95px; 
-			vertical-align:top; width: 150px; margin: 20px; max-width: 15%">
+			<div class="myStyle2 center">
 				<div>
 					<a href="view_book?id=${book.bookId}">
-						<img src="data:image/jpg;base64,${book.base64Image}" width="128" 
-						height="164"/>
+						<img class="book-small" src="data:image/jpg;base64,${book.base64Image}" />
 					</a>
 				</div>
 				<div>

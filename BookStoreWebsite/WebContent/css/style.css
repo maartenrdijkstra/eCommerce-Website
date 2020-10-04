@@ -5,11 +5,11 @@
 }
 
 #headermenu div {
-	display: table-cell; 
+	display: table-cell;
 	padding-right: 20px;
 }
 
-#headermenu div:last-child { 
+#headermenu div:last-child {
 	padding-right: 0px;
 }
 
@@ -91,5 +91,104 @@ input {
 	margin: 5px;
 }
 
+div.center {
+	text-align: center;
+}
 
+div.left {
+	text-align: left;
+}
 
+div.book {
+	display: inline-block;
+	margin: 20px;
+	text-align: center;
+	border: 0;
+	/* width: 80%;*/
+}
+
+table.book {
+	width: 80%;
+	border: 0;
+	margin: 0 auto;
+}
+
+div.myStyle {
+	width: 80%;
+	margin: 0 14%;
+}
+
+div.myStyle2 {
+	display: inline-block;
+	min-width: 95px;
+	vertical-align: top;
+	width: 150px;
+	margin: 20px;
+	max-width: 15%
+}
+
+div.myStyle3 {
+	display: inline-block; 
+	margin:20px; 
+	width:12%; 
+	min-width:95px; 
+	vertical-align:top;
+}
+
+div.newBooks {
+	display: inline-block;
+	min-width: 95px;
+	vertical-align: top;
+	width: 150px;
+	margin: 20px;
+	max-width: 15%
+}
+
+div.book-group {
+	width: 90%; 
+	margin: 0 auto;
+}
+
+div.next-row {
+	clear: both;
+}
+
+img.book-small {
+	width: 128px;
+	height: 164px;
+}
+
+img.book-large {
+	width: 240px;
+	height: 300px;
+}
+
+#book-title {
+	font-size: x-large;
+	font-weight: bold;
+}
+
+#book-author {
+	font-size: large;
+	font-style: italic;
+}
+
+#description {
+	text-align: justify;
+	vertical-align: top;
+}
+
+#search-description {
+	display: inline-block; 
+	margin: 0px 10px 20px 20px; 
+	width:55%; 
+	min-width:40%; 
+	vertical-align:top;
+}
+
+#search-price {
+	display: inline-block; 
+	margin: 0px 5px 0px 5px; 
+	width:10%; 
+	vertical-align:top;
+}
