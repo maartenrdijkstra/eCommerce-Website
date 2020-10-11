@@ -1,16 +1,18 @@
 package com.bookstore.service;
 
+import static com.bookstore.service.CommonUtility.forwardToPage;
+import static com.bookstore.service.CommonUtility.showMessageBackend;
+
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.bookstore.dao.BookDAO;
 import com.bookstore.dao.CategoryDAO;
 import com.bookstoredb.entity.Category;
-import static com.bookstore.service.CommonUtility.*;
 
 public class CategoryServices {
 	private CategoryDAO categoryDAO;
@@ -99,8 +101,18 @@ public class CategoryServices {
 			return;
 		}
 
-		categoryDAO.delete(categoryId);
-		message = "The category with ID " + categoryId + " has been removed successfully.";
+		BookDAO bookDAO = new BookDAO();
+		long numberOfBooks = bookDAO.countByCategory(categoryId);
+		
+		
+		if(numberOfBooks > 0) {
+			message = "Could not delete the category (ID: %d) because it contains some books.";
+			message = String.format(message, numberOfBooks);
+			
+		} else {
+			categoryDAO.delete(categoryId);
+			message = "The category with ID " + categoryId + " has been removed successfully.";
+		}
 		listCategory(message);
 	}
 }

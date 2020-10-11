@@ -22,7 +22,7 @@
 	</c:if>
 		
 		<form id="loginForm" action="login" method="post">
-			<table>
+			<table align="center">
 				<tr>
 					<td>Email:</td>
 					<td><input type="text" name="email" id="email" size="20"></td>

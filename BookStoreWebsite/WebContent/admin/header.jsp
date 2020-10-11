@@ -1,7 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div align="center">
 	<div>
-		<img src="../images/BookstoreAdminLogo.png" />
+		<a href="${pageContext.request.contextPath}/admin/">
+			<img src="../images/BookstoreAdminLogo.png" />
+		</a>
 	</div>
 	<div>
 		Welcome,
