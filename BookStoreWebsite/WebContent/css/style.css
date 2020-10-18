@@ -108,10 +108,12 @@ div.book {
 	/* width: 80%;*/
 }
 
-table.book {
-	width: 80%;
+table.normal {
 	border: 0;
-	margin: 0 auto;
+}
+
+table.customer {
+	border: 0;
 }
 
 div.myStyle {
