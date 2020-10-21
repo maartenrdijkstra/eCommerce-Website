@@ -12,7 +12,9 @@ import com.bookstore.dao.CustomerDAO;
 import com.bookstore.dao.HashGenerator;
 import com.bookstoredb.entity.Customer;
 
-public class CustomerServices extends CommonUtility {
+import static com.bookstore.service.CommonUtility.*;
+
+public class CustomerServices {
 	
 	private CustomerDAO customerDAO;
 

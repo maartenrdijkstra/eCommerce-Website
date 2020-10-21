@@ -31,19 +31,16 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name = "book", catalog = "bookstoredb", uniqueConstraints = @UniqueConstraint(columnNames = "title"))
-@NamedQueries({
-	@NamedQuery(name = "Book.findAll", query = "SELECT b FROM Book b"),
-	@NamedQuery(name = "Book.findByTitle", query = "SELECT b FROM Book b WHERE b.title = :title"),
-	@NamedQuery(name = "Book.countAll", query = "SELECT COUNT(*) FROM Book b"),
-	@NamedQuery(name = "Book.countByCategory", query = "SELECT COUNT(b) FROM Book b "
-			+ "WHERE b.category.categoryId = :catId"),
-	@NamedQuery(name = "Book.findByCategory", query = "SELECT b FROM Book b "
-			+ "JOIN Category c ON b.category.categoryId = c.categoryId AND c.categoryId = :catId"),
-	@NamedQuery(name = "Book.listNew", query = "SELECT b FROM Book b ORDER BY b.publishDate DESC"),
-	@NamedQuery(name = "Book.search", query = " SELECT b FROM Book b WHERE b.title LIKE '%' || :keyword || '%'"
-			+ " OR b.author LIKE '%' || :keyword || '%'"
-			+ " OR b.description LIKE '%' || :keyword || '%'")
-})
+@NamedQueries({ @NamedQuery(name = "Book.findAll", query = "SELECT b FROM Book b"),
+		@NamedQuery(name = "Book.findByTitle", query = "SELECT b FROM Book b WHERE b.title = :title"),
+		@NamedQuery(name = "Book.countAll", query = "SELECT COUNT(*) FROM Book b"),
+		@NamedQuery(name = "Book.countByCategory", query = "SELECT COUNT(b) FROM Book b "
+				+ "WHERE b.category.categoryId = :catId"),
+		@NamedQuery(name = "Book.findByCategory", query = "SELECT b FROM Book b "
+				+ "JOIN Category c ON b.category.categoryId = c.categoryId AND c.categoryId = :catId"),
+		@NamedQuery(name = "Book.listNew", query = "SELECT b FROM Book b ORDER BY b.publishDate DESC"),
+		@NamedQuery(name = "Book.search", query = " SELECT b FROM Book b WHERE b.title LIKE '%' || :keyword || '%'"
+				+ " OR b.author LIKE '%' || :keyword || '%'" + " OR b.description LIKE '%' || :keyword || '%'") })
 
 public class Book implements java.io.Serializable {
 
@@ -103,7 +100,7 @@ public class Book implements java.io.Serializable {
 	public void setBookId(Integer bookId) {
 		this.bookId = bookId;
 	}
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "category_id", nullable = false)
 	public Category getCategory() {
@@ -196,9 +193,9 @@ public class Book implements java.io.Serializable {
 			public int compare(Review review1, Review review2) {
 				return review2.getReviewTime().compareTo(review1.getReviewTime());
 			}
-			
+
 		});
-		
+
 		sortedReviews.addAll(reviews);
 		return sortedReviews;
 	}
@@ -215,7 +212,7 @@ public class Book implements java.io.Serializable {
 	public void setOrderDetails(Set orderDetails) {
 		this.orderDetails = orderDetails;
 	}
-	
+
 	@Transient
 	public String getBase64Image() {
 		this.base64Image = Base64.getEncoder().encodeToString(this.image);
@@ -225,6 +222,55 @@ public class Book implements java.io.Serializable {
 	@Transient
 	public void setBase64Image(String base64Image) {
 		this.base64Image = base64Image;
+	}
+
+	@Transient
+	public float getAverageRating() {
+		float averageRating = 0.0f;
+		float sum = 0.0f;
+
+		if (reviews.isEmpty()) {
+			return 0.0f;
+		}
+		for (Review review : reviews) {
+			sum += review.getRating();
+		}
+
+		averageRating = sum / reviews.size();
+
+		return averageRating;
+	}
+
+	@Transient
+	public String getRatingString(float averageRating) {
+		String result = "";
+
+		int numberOfStarsOn = 0;
+		int off = 5;
+
+		for (int i = 1; i <= (averageRating + 0.2f); i++) {
+			numberOfStarsOn++;
+			result += "on,";
+			off--;
+		}
+
+		if (averageRating >= numberOfStarsOn + 0.2f) {
+			result += "half,";
+			off--;
+		}
+
+		for (int j = off; j >= 1; j--) {
+			result += "off,";
+		}
+
+		return result.substring(0, result.length() - 1);
+	}
+	
+	@Transient
+	public String getRatingStars() {
+		float averageRating = getAverageRating();
+		
+		return getRatingString(averageRating);
 	}
 
 	@Override
@@ -251,6 +297,5 @@ public class Book implements java.io.Serializable {
 			return false;
 		return true;
 	}
-	
-	
+
 }

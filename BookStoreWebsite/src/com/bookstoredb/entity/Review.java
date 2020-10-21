@@ -11,12 +11,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "review", catalog = "bookstoredb")
+@NamedQueries({
+	@NamedQuery(name = "Review.listAll", query = "SELECT r FROM Review r ORDER BY r.reviewTime DESC"),
+	@NamedQuery(name = "Review.countAll", query = "SELECT COUNT(r) FROM Review r")
+})
 public class Review implements java.io.Serializable {
 
 	private Integer reviewId;
@@ -41,7 +48,6 @@ public class Review implements java.io.Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-
 	@Column(name = "review_id", unique = true, nullable = false)
 	public Integer getReviewId() {
 		return this.reviewId;
@@ -106,6 +112,22 @@ public class Review implements java.io.Serializable {
 
 	public void setReviewTime(Date reviewTime) {
 		this.reviewTime = reviewTime;
+	}
+	
+	@Transient
+	public String getStars() {
+		String result = "";
+
+		int numberOfStarsOn = (int) rating;
+
+		for(int i = 1; i <= numberOfStarsOn; i++) {
+			result+= "on,";
+		}
+
+		for(int j = numberOfStarsOn + 1; j <= 5; j++) {
+			result += "off,";
+		}
+		return result.substring(0, result.length() - 1);
 	}
 
 }
