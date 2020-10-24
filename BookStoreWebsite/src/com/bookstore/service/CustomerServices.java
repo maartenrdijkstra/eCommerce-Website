@@ -1,5 +1,9 @@
 package com.bookstore.service;
 
+import static com.bookstore.service.CommonUtility.forwardToPage;
+import static com.bookstore.service.CommonUtility.showMessageBackend;
+import static com.bookstore.service.CommonUtility.showMessageFrontend;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -7,12 +11,11 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.bookstore.dao.CustomerDAO;
 import com.bookstore.dao.HashGenerator;
 import com.bookstoredb.entity.Customer;
-
-import static com.bookstore.service.CommonUtility.*;
 
 public class CustomerServices {
 	
@@ -178,9 +181,17 @@ public class CustomerServices {
 			request.setAttribute("message", message);
 			showLogin();
 		} else {
-			request.getSession().setAttribute("loggedCustomer", customer);
+			HttpSession session = request.getSession();
+			session.setAttribute("loggedCustomer", customer);
+			Object objRedirectURL = session.getAttribute("redirectURL");
 			
-			showCustomerProfile();
+			if(objRedirectURL != null) {
+				String redirectURL = (String) objRedirectURL;
+				session.removeAttribute("redirectURL");
+				response.sendRedirect(redirectURL);
+			} else {
+				showCustomerProfile();
+			}
 		}
 	}
 	

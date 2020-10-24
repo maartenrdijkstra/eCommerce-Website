@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>${book.title} - Online Book Store</title>
 <link rel="stylesheet" href="css/style.css">
+<script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
@@ -28,8 +29,7 @@
 				<td valign="top" align="left">
 					<jsp:directive.include file="book_rating.jsp" />
 					<a href="#reviews">${fn:length(book.reviews)}
-					${book.reviews.size() eq 1 ? " Review" : " Reviews"}
-					
+						${book.reviews.size() eq 1 ? " Review" : " Reviews"}
 					</a>
 				</td>
 				<td valign="top" rowspan="2" width="20%">
@@ -50,7 +50,7 @@
 					<h2><a id="reviews">Customer Reviews</a></h2>
 				</td>
 				<td colspan="2" align="center">
-					<button>Write a Customer Review</button>
+					<button id="buttonWriteReview">Write a Customer Review</button>
 				</td>
 			</tr>
 			
@@ -87,5 +87,14 @@
 	</div>
 
 	<jsp:directive.include file="footer.jsp" />
+	<script>
+	$(document).ready(function() {
+	
+		$('#buttonWriteReview').click(function() {
+			window.location = 'write_review?book_id=' + ${book.bookId};
+		});
+		
+	});
+	</script>
 </body>
 </html>

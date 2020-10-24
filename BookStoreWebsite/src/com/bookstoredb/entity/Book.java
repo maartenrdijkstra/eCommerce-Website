@@ -60,6 +60,13 @@ public class Book implements java.io.Serializable {
 
 	public Book() {
 	}
+	
+	public Book(Integer bookId) {
+		super();
+		this.bookId = bookId;
+	}
+
+
 
 	public Book(Category category, String title, String author, String description, String isbn, byte[] image,
 			float price, Date publishDate, Date lastUpdateTime) {
