@@ -1,92 +1,79 @@
 package com.bookstoredb.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Embeddable
 public class OrderDetailId implements java.io.Serializable {
 
-	private Integer orderId;
-	private Integer bookId;
-	private int quantity;
-	private float subtotal;
-
+	private Book book;
+	private BookOrder bookOrder;
+	
 	public OrderDetailId() {
 	}
 
-	public OrderDetailId(int quantity, float subtotal) {
-		this.quantity = quantity;
-		this.subtotal = subtotal;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "book_id", insertable = false, updatable = false, nullable = false)
+	public Book getBook() {
+		return this.book;
 	}
 
-	public OrderDetailId(Integer orderId, Integer bookId, int quantity, float subtotal) {
-		this.orderId = orderId;
-		this.bookId = bookId;
-		this.quantity = quantity;
-		this.subtotal = subtotal;
+	public void setBook(Book book) {
+		this.book = book;
 	}
 
-	@JoinColumn(name = "order_id", insertable = false, updatable = false, nullable = true)
-	public Integer getOrderId() {
-		return this.orderId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "order_id", insertable = false, updatable = false, nullable = false)
+	public BookOrder getBookOrder() {
+		return this.bookOrder;
 	}
 
-	public void setOrderId(Integer orderId) {
-		this.orderId = orderId;
+	public void setBookOrder(BookOrder bookOrder) {
+		this.bookOrder = bookOrder;
 	}
 
-	@JoinColumn(name = "book_id", insertable = false, updatable = false, nullable = true)
-	public Integer getBookId() {
-		return this.bookId;
-	}
 
-	public void setBookId(Integer bookId) {
-		this.bookId = bookId;
-	}
-
-	@Column(name = "quantity", nullable = false)
-	public int getQuantity() {
-		return this.quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
-	public float getSubtotal() {
-		return this.subtotal;
-	}
-
-	@Column(name = "subtotal", nullable = false, precision = 12, scale = 0)
-	public void setSubtotal(float subtotal) {
-		this.subtotal = subtotal;
-	}
-
-	public boolean equals(Object other) {
-		if ((this == other))
-			return true;
-		if ((other == null))
-			return false;
-		if (!(other instanceof OrderDetailId))
-			return false;
-		OrderDetailId castOther = (OrderDetailId) other;
-
-		return ((this.getOrderId() == castOther.getOrderId()) || (this.getOrderId() != null
-				&& castOther.getOrderId() != null && this.getOrderId().equals(castOther.getOrderId())))
-				&& ((this.getBookId() == castOther.getBookId()) || (this.getBookId() != null
-						&& castOther.getBookId() != null && this.getBookId().equals(castOther.getBookId())))
-				&& (this.getQuantity() == castOther.getQuantity()) && (this.getSubtotal() == castOther.getSubtotal());
-	}
-
+	@Override
 	public int hashCode() {
-		int result = 17;
-
-		result = 37 * result + (getOrderId() == null ? 0 : this.getOrderId().hashCode());
-		result = 37 * result + (getBookId() == null ? 0 : this.getBookId().hashCode());
-		result = 37 * result + this.getQuantity();
-		result = 37 * result + (int) this.getSubtotal();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((book == null) ? 0 : book.hashCode());
+		result = prime * result + ((bookOrder == null) ? 0 : bookOrder.hashCode());
 		return result;
 	}
 
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OrderDetailId other = (OrderDetailId) obj;
+		if (book == null) {
+			if (other.book != null)
+				return false;
+		} else if (!book.equals(other.book))
+			return false;
+		if (bookOrder == null) {
+			if (other.bookOrder != null)
+				return false;
+		} else if (!bookOrder.equals(other.bookOrder))
+			return false;
+		return true;
+	}
+
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString();
+	}
+	
+	
 }

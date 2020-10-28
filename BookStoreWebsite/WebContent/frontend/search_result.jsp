@@ -41,7 +41,7 @@
 						</div>
 						<div id="search-price">
 							<h3>$${book.price}</h3>
-							<h3><a href="">Add To Cart</a></h3>
+							<h3><a href="add_to_cart?book_id=${book.bookId}">Add To Cart</a></h3>
 						</div>
 					</div>
 				</c:forEach>	

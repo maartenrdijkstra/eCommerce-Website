@@ -98,7 +98,6 @@ public class Book implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-
 	@Column(name = "book_id", unique = true, nullable = false)
 	public Integer getBookId() {
 		return this.bookId;
@@ -207,7 +206,7 @@ public class Book implements java.io.Serializable {
 		return sortedReviews;
 	}
 
-	public void setReviews(Set reviews) {
+	public void setReviews(Set<Review> reviews) {
 		this.reviews = reviews;
 	}
 
@@ -216,10 +215,9 @@ public class Book implements java.io.Serializable {
 		return this.orderDetails;
 	}
 
-	public void setOrderDetails(Set orderDetails) {
+	public void setOrderDetails(Set<OrderDetail> orderDetails) {
 		this.orderDetails = orderDetails;
 	}
-
 	@Transient
 	public String getBase64Image() {
 		this.base64Image = Base64.getEncoder().encodeToString(this.image);

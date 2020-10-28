@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "book_order", catalog = "bookstoredb")
@@ -32,7 +33,7 @@ public class BookOrder implements java.io.Serializable {
 	private String paymentMethod;
 	private float total;
 	private String status;
-	private Set<OrderDetail> orderDetails = new HashSet<>(0);
+	private Set<OrderDetail> orderDetails = new HashSet<OrderDetail>(0);
 
 	public BookOrder() {
 	}
@@ -103,7 +104,7 @@ public class BookOrder implements java.io.Serializable {
 		this.shippingAddress = shippingAddress;
 	}
 
-	@Column(name = "recipient_name", nullable = false, length = 45)
+	@Column(name = "recipient_name", nullable = false, length = 30)
 	public String getRecipientName() {
 		return this.recipientName;
 	}
@@ -111,7 +112,7 @@ public class BookOrder implements java.io.Serializable {
 	public void setRecipientName(String recipientName) {
 		this.recipientName = recipientName;
 	}
-	
+
 	@Column(name = "recipient_phone", nullable = false, length = 15)
 	public String getRecipientPhone() {
 		return this.recipientPhone;
@@ -121,7 +122,7 @@ public class BookOrder implements java.io.Serializable {
 		this.recipientPhone = recipientPhone;
 	}
 
-	@Column(name = "payemnt_method", nullable = false, length = 20)
+	@Column(name = "payment_method", nullable = false, length = 20)
 	public String getPaymentMethod() {
 		return this.paymentMethod;
 	}
@@ -130,7 +131,7 @@ public class BookOrder implements java.io.Serializable {
 		this.paymentMethod = paymentMethod;
 	}
 
-	@Column( name = "total", nullable = false)
+	@Column(name = "total", nullable = false, precision = 12, scale = 0)
 	public float getTotal() {
 		return this.total;
 	}
@@ -139,7 +140,7 @@ public class BookOrder implements java.io.Serializable {
 		this.total = total;
 	}
 
-	@Column( name = "status", nullable = false, length = 20)
+	@Column(name = "status", nullable = false, length = 20)
 	public String getStatus() {
 		return this.status;
 	}
@@ -153,8 +154,19 @@ public class BookOrder implements java.io.Serializable {
 		return this.orderDetails;
 	}
 
-	public void setOrderDetails(Set orderDetails) {
+	public void setOrderDetails(Set<OrderDetail> orderDetails) {
 		this.orderDetails = orderDetails;
+	}
+
+	@Transient
+	public int getBookCopies() {
+		int total = 0;
+		
+		for (OrderDetail orderDetail : orderDetails) {
+			total += orderDetail.getQuantity();
+		}
+		
+		return total;
 	}
 	
 	@Override
@@ -181,5 +193,4 @@ public class BookOrder implements java.io.Serializable {
 			return false;
 		return true;
 	}
-
 }
