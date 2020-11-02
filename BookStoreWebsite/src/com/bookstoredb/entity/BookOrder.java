@@ -14,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -22,6 +24,10 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "book_order", catalog = "bookstoredb")
+@NamedQueries({
+	@NamedQuery(name = "BookOrder.findAll", query = "SELECT bo FROM BookOrder bo ORDER BY bo.orderDate DESC"),
+	@NamedQuery(name = "BookOrder.countAll", query = "SELECT COUNT(*) FROM BookOrder")
+})
 public class BookOrder implements java.io.Serializable {
 
 	private Integer orderId;
@@ -65,7 +71,6 @@ public class BookOrder implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-
 	@Column(name = "order_id", unique = true, nullable = false)
 	public Integer getOrderId() {
 		return this.orderId;
