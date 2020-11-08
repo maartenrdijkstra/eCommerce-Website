@@ -3,6 +3,7 @@ package com.bookstore.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -152,6 +153,26 @@ public class OrderDAOTest {
 	
 		assertEquals(1, order.getOrderDetails().size());
 	}
+	
+	@Test
+	public void testGetByIdAndCustomerNull() {
+		Integer orderId = 9;
+		Integer customerId = 99;
+		
+		BookOrder order = orderDAO.get(orderId, customerId);
+		
+		assertNull(order);
+	}
+
+	@Test
+	public void testGetByIdAndCustomerNotNull() {
+		Integer orderId = 9;
+		Integer customerId = 9;
+		
+		BookOrder order = orderDAO.get(orderId, customerId);
+		
+		assertNotNull(order);
+	}
 
 	@Test
 	public void testDeleteOrder() {
@@ -181,9 +202,31 @@ public class OrderDAOTest {
 	}
 
 	@Test
+	public void testListByCustomerNoOrders() {
+		Integer customerId = 99;
+		List<BookOrder> listOrders = orderDAO.listByCustomer(customerId);
+		
+		assertTrue(listOrders.isEmpty());
+	}
+	
+	@Test
+	public void testListByCustomerHaveOrders() {
+		Integer customerId = 11;
+		List<BookOrder> listOrders = orderDAO.listByCustomer(customerId);
+		
+		assertTrue(listOrders.size() > 0);
+	}
+	
+	@Test
 	public void testCount() {
 		long totalOrders = orderDAO.count();
 		assertEquals(2, totalOrders);
 	}
 
+	@Test
+	public void testListMostRecentSales() {
+		List<BookOrder> recentOrders = orderDAO.listMostRecentSales();
+		
+		assertEquals(3, recentOrders.size());
+	}
 }

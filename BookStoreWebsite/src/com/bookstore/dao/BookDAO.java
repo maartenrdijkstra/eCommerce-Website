@@ -1,10 +1,8 @@
 package com.bookstore.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 import com.bookstoredb.entity.Book;
 
@@ -68,5 +66,15 @@ public class BookDAO extends JpaDAO<Book> implements GenericDAO<Book> {
 
 	public long countByCategory(int categoryId) {
 		return super.countWithNamedQuery("Book.countByCategory", "catId", categoryId);
+	}
+	
+	
+	public List<Book> listBestSellingBooks() {
+		return super.findWithNamedQuery("OrderDetail.bestSelling", 0, 4);
+	}
+	
+	public List<Book> listMostFavoredBooks() {
+		
+		return super.findWithNamedQuery("Review.mostFavoredBooks", 0, 4);
 	}
 }

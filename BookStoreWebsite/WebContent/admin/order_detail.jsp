@@ -81,7 +81,10 @@
 			<c:forEach items="${order.orderDetails}" var="orderDetail" varStatus="status">
 				<tr>	
 					<td>${status.index + 1}</td>	
-					<td>${orderDetail.book.title}</td>	
+					<td>
+						<img style="vertical-align: middle" src="data:image/jpg;base64,${orderDetail.book.base64Image}" width="48" height="64"/>
+						${orderDetail.book.title}
+					</td>	
 					<td>${orderDetail.book.author}</td>	
 					<td><fmt:formatNumber value="${orderDetail.book.price}" type="currency" /></td>
 					<td>${orderDetail.quantity}</td>	
@@ -101,11 +104,11 @@
 	</div>
 	<div align="center">
 		<br />
-		<a href="">Edit this Order</a>
+		<a href="edit_order?id=${order.orderId}">Edit this Order</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<a href="">Delete this Order</a>
 	</div>
-	
+
 	<jsp:directive.include file="footer.jsp" />
 
 	<script>

@@ -14,6 +14,7 @@ import com.bookstore.dao.BookDAO;
 import com.bookstore.dao.CategoryDAO;
 import com.bookstoredb.entity.Book;
 import com.bookstoredb.entity.Category;
+import static com.bookstore.service.CommonUtility.forwardToPage;
 
 @WebServlet("")
 public class HomeServlet extends HttpServlet {
@@ -29,11 +30,13 @@ public class HomeServlet extends HttpServlet {
 		BookDAO bookDAO = new BookDAO();
 		
 		List<Book> listNewBooks = bookDAO.listNewBooks();
+		List<Book> listBestSellingBooks = bookDAO.listBestSellingBooks();
+		List<Book> listFavoredBooks = bookDAO.listMostFavoredBooks();
 
 		request.setAttribute("listNewBooks", listNewBooks);
+		request.setAttribute("listBestSellingBooks", listBestSellingBooks);
+		request.setAttribute("listFavoredBooks", listFavoredBooks);
 		
-		String homepage = "frontend/index.jsp";
-		RequestDispatcher dispatcher = request.getRequestDispatcher(homepage);
-		dispatcher.forward(request, response);
+		forwardToPage("frontend/index.jsp", request, response);
 	}
 }
